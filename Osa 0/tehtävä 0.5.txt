@@ -1,0 +1,50 @@
+title tehtävä 0.5
+kayttaja->selain:
+note right of kayttaja
+Käyttäjä kirjottaa selaimeen 
+fullstack-exampleapp.herokuapp.com/spa
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/spa
+palvelin->selain: 200 OK, Sivun HTML-koodi
+
+note right of selain
+ Selain lataa CSS-stylesheetin main.css, 
+ joka on määritelty ylimpänä sivun
+ HTML:n head-tägissä
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, CSS
+
+
+note right of selain
+ Selain lataa javascriptin spa.js, 
+ joka on määritelty toisena sivun
+ HTML:n head-tägissä
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/spa.js
+palvelin->selain: status 200, javascript
+
+note right of selain
+ Selain suorittaa ladatun koodin, joka saa sen 
+ suorittamaan GETin JSON-datan hakua varten, 
+ jota script odottaa. Nyt koodissa on mukana myös 
+ osio sivun lomakkeen hallintaan, joka suoritetaan
+ Talleta-napista
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, json
+
+note right of selain
+ Script täyttää muistiinapnot-listan ladatun datan 
+ perusteella.
+end note
+
+note left of selain
+Lopuksi selain näyttää lopullisen HTML:n 
+käyttäjälle. Elementtien tyyli tulee ladatun CSS:n
+perusteella
+end note

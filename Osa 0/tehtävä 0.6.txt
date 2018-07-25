@@ -1,0 +1,29 @@
+title tehtävä 0.6
+kayttaja->selain:
+note right of kayttaja
+Käyttäjä kirjottaa tekstikenttään jotain ja
+ja painaa Talleta-nappulaa
+end note
+
+note right of selain
+ Nappulan painaminen saa selaimen lähettämään
+ POST-pyynnön scriptissä määritettyyn paikkaan
+ '/new_note_spa'. Script tekee kenttään kirjoitetusta 
+ tekstistä JSONia(johon kuuluu lisäksi 'date') ja 
+ lähettää sen serverille.
+end note
+
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+palvelin->selain: 201 Created, JSON {"message":"note created"}
+
+note right of selain
+ Nyt siis sivua ei ladata uudelleen, vaan koodi, joka
+ hallinnoi lomaketta, lisää uuden muistiinpanon listaan
+ ja piirtää ruudun uudelleen.
+end note
+
+
+note right of kayttaja
+Käyttäjä näkee muutoksen heti lataamatta
+sivua uudelleen.
+end note

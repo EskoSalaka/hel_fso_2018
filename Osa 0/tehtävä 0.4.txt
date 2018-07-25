@@ -1,0 +1,68 @@
+title tehtävä 0.4
+kayttaja->selain:
+note left of selain
+Käyttäjä kirjottaa tekstikenttään jotain ja
+ja painaa Talleta-nappulaa
+end note
+
+note right of selain
+ Selain lähettää syötetyn Form Datan POST-pyynnöllä. 
+end note
+
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note
+palvelin->selain: 302 Found, Redirectaus osoite
+
+note left of palvelin
+ Serveri lisää postatun datan muistiinpanoihin 
+ ja sieltä tulee takaisin redirectaus pyyntö 
+ osoitteeseen, joka löytyy Response Headerista
+end note
+
+note right of selain
+ Tämän jälkeen selain lähettää GETin pyydettyyn
+ paikkaan, ja toistuu sama kuvio, kuin edellisessä 
+ tehtävässä. Ainoana erona on nyt se, että
+ muistiinpanoissa on uutta tekstiä.
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/notes
+palvelin->selain: 200 OK, sivun HTML-koodi
+
+note right of selain
+ Selain lataa CSS-stylesheetin, 
+ joka on määritelty ylimpänä sivun
+ HTML:n head-tägissä
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, CSS
+
+
+note right of selain
+ Selain lataa javascriptin, joka on 
+ määritelty toisena sivun
+ HTML:n head-tägissä
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200, javascript
+
+note right of selain
+ Selain suorittaa ladatun koodin, joka saa sen 
+ suorittamaan GETin JSON-datan hakua varten, 
+ jota script odottaa
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, json
+
+note right of selain
+ Script täyttää muistiinapnot-listan ladatun datan 
+ perusteella.
+end note
+
+note left of selain
+Lopuksi selain näyttää lopullisen HTML:n 
+käyttäjälle. Elementtien tyyli tulee ladatun CSS:n
+perusteella
+end note

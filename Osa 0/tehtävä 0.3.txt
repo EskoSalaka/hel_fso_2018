@@ -1,0 +1,47 @@
+title tehtävä 0.3
+
+kayttaja->selain:
+note left of selain
+Käyttäjä kirjottaa osoiteriville
+fullstack-exampleapp.herokuapp.com/notes
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/notes
+palvelin->selain: status 200, sivun HTML-koodi
+
+note right of selain
+ Seuraavaksi selain lataa CSS-stylesheetin, 
+ joka on määritelty ylimpänä sivun
+ HTML:n head-tägissä
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, CSS
+
+note right of selain
+ Seuraavaksi selain lataa javascriptin, joka on 
+ määritelty toisena sivun
+ HTML:n head-tägissä
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200, javascript
+
+note right of selain
+ Selain suorittaa ladatun koodin, joka saa sen 
+ suorittamaan GETin JSON-datan hakua varten, 
+ jota script odottaa
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, json
+
+note right of selain
+ Script täyttää muistiinapnot-listan ladatun datan 
+ perusteella.
+end note
+
+note left of selain
+Lopuksi selain näyttää lopullisen HTML:n 
+käyttäjälle
+end note
