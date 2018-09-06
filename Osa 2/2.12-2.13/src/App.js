@@ -1,21 +1,21 @@
-import React from "react";
-import axios from "axios";
-import CountryView from "./components/CountryView";
-import CountryFilter from "./components/CountryFilter";
+import React from 'react';
+import axios from 'axios';
+import CountryView from './components/CountryView';
+import CountryFilter from './components/CountryFilter';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       countries: [],
-      targetName: ""
+      targetName: ''
     };
 
     this.setTargetName = this.setTargetName.bind(this);
   }
 
   componentDidMount() {
-    axios.get("https://restcountries.eu/rest/v2/all").then(response => {
+    axios.get('https://restcountries.eu/rest/v2/all').then(response => {
       this.setState({ countries: response.data });
     });
   }
