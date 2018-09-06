@@ -1,11 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import Kurssi from './Components/Kurssi'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Kurssi from './Components/Kurssi';
 
 const Kurssit = ({ kurssit }) => {
   return (
     <div>
-      {kurssit.map(kurssi => <Kurssi key={kurssi.id} kurssi={kurssi} />)}
+      {kurssit.map(kurssi => (
+        <Kurssi key={kurssi.id} kurssi={kurssi} />
+      ))}
     </div>
   );
 };
@@ -21,37 +23,37 @@ const Sivuotsikko = ({ nimi }) => {
 const App = () => {
   const kurssit = [
     {
-      nimi: "Half Stack -sovelluskehitys",
+      nimi: 'Half Stack -sovelluskehitys',
       id: 1,
       osat: [
         {
-          nimi: "Reactin perusteet",
+          nimi: 'Reactin perusteet',
           tehtavia: 10,
           id: 1
         },
         {
-          nimi: "Tiedonvälitys propseilla",
+          nimi: 'Tiedonvälitys propseilla',
           tehtavia: 7,
           id: 2
         },
         {
-          nimi: "Komponenttien tila",
+          nimi: 'Komponenttien tila',
           tehtavia: 14,
           id: 3
         }
       ]
     },
     {
-      nimi: "Node.js",
+      nimi: 'Node.js',
       id: 2,
       osat: [
         {
-          nimi: "Routing",
+          nimi: 'Routing',
           tehtavia: 3,
           id: 1
         },
         {
-          nimi: "Middlewaret",
+          nimi: 'Middlewaret',
           tehtavia: 7,
           id: 2
         }
@@ -67,4 +69,4 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));

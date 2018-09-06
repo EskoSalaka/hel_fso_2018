@@ -1,5 +1,7 @@
-import React from "react";
+import React from 'react';
 
+//Kun henkilöiden nimien oletetaan olevan uniikkeja, käyetään avaimina "key"
+//henkilöiden nimiä
 const Persons = ({ persons, nameFilter }) => {
   return (
     <div>
@@ -16,7 +18,9 @@ const Persons = ({ persons, nameFilter }) => {
                 return true;
               }
             })
-            .map(person => <Person key={person.name} person={person} />)}
+            .map(person => (
+              <Person key={person.name} person={person} />
+            ))}
         </tbody>
       </table>
     </div>

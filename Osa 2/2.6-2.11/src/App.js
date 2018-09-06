@@ -1,17 +1,17 @@
-import React from "react";
-import axios from 'axios'
-import AddPersonForm from "./components/AddPersonForm";
-import Persons from "./components/Persons";
-import FilterForm from "./components/FilterForm";
+import React from 'react';
+import axios from 'axios';
+import AddPersonForm from './components/AddPersonForm';
+import Persons from './components/Persons';
+import FilterForm from './components/FilterForm';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       persons: [],
-      newName: "",
-      newNumber: "",
-      nameFilter: ""
+      newName: '',
+      newNumber: '',
+      nameFilter: ''
     };
 
     this.addPerson = this.addPerson.bind(this);
@@ -19,14 +19,15 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log("did mount");
-    axios.get("http://localhost:3001/db").then(response => {
-      console.log("promise fulfilled");
+    console.log('did mount');
+    axios.get('http://localhost:3001/db').then(response => {
+      console.log('promise fulfilled');
       this.setState({ persons: response.data.persons });
     });
   }
 
   onTextFieldChange(event) {
+    event.preventDefault();
     const value = event.target.value;
     const name = event.target.name;
 
@@ -48,11 +49,11 @@ class App extends React.Component {
     } else if (!this.state.persons.map(p => p.name).includes(newPerson.name)) {
       this.setState(prevState => ({
         persons: [...prevState.persons, newPerson],
-        newName: "",
-        newNumber: ""
+        newName: '',
+        newNumber: ''
       }));
     } else {
-      alert("Annettu henkilö löytyy jo luettelosta!");
+      alert('Annettu henkilö löytyy jo luettelosta!');
     }
   };
 

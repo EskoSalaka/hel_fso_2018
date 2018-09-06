@@ -1,19 +1,19 @@
-import React from "react";
-import personsService from "./services/persons";
-import AddPersonForm from "./components/AddPersonForm";
-import Persons from "./components/Persons";
-import FilterForm from "./components/FilterForm";
-import ErrorNotification from "./components/ErrorNotification";
-import SuccessNotification from "./components/SuccessNotification";
+import React from 'react';
+import personsService from './services/persons';
+import AddPersonForm from './components/AddPersonForm';
+import Persons from './components/Persons';
+import FilterForm from './components/FilterForm';
+import ErrorNotification from './components/ErrorNotification';
+import SuccessNotification from './components/SuccessNotification';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       persons: [],
-      newName: "",
-      newNumber: "",
-      nameFilter: "",
+      newName: '',
+      newNumber: '',
+      nameFilter: '',
       errorMessage: null,
       successMessage: null
     };
@@ -54,8 +54,8 @@ class App extends React.Component {
       personsService.addNewPerson(newPerson).then(newPerson => {
         this.setState(prevState => ({
           persons: [...prevState.persons, newPerson],
-          newName: "",
-          newNumber: "",
+          newName: '',
+          newNumber: '',
           successMessage: `Henkilö '${newPerson.name}' lisätty onnistuneesti`
         }));
       });
@@ -66,7 +66,7 @@ class App extends React.Component {
     } else if (this.state.persons.map(p => p.name).includes(newPerson.name)) {
       if (
         window.confirm(
-          newPerson.name + " on jo luettelossa. Korvataanko vanha numero?"
+          newPerson.name + ' on jo luettelossa. Korvataanko vanha numero?'
         )
       ) {
         let pid = this.state.persons.find(p => p.name === newPerson.name).id;
@@ -111,7 +111,7 @@ class App extends React.Component {
     const personIdInt = parseInt(event.target.id, 10);
     const personName = this.state.persons.find(p => p.id === personIdInt).name;
 
-    if (window.confirm("Poistetaanko varmasti henkilö " + personName + "?")) {
+    if (window.confirm('Poistetaanko varmasti henkilö ' + personName + '?')) {
       personsService.deletePerson(event.target.id).then(newPerson => {
         this.setState({
           successMessage: `Henkilö '${personName}' poistettu onnistuneesti`,

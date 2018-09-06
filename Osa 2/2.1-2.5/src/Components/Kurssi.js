@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Kurssi = ({ kurssi }) => {
   return (
@@ -29,7 +29,13 @@ const Osa = ({ osa }) => {
 };
 
 const Sisalto = ({ osat }) => {
-  return <div>{osat.map(osa => <Osa key={osa.id} osa={osa} />)}</div>;
+  return (
+    <div>
+      {osat.map(osa => (
+        <Osa key={osa.id} osa={osa} />
+      ))}
+    </div>
+  );
 };
 
 const Yhteensa = ({ osat }) => {
