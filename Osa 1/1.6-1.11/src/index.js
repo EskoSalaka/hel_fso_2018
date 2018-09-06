@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const StatisticInt = props => {
   return (
@@ -27,7 +27,7 @@ const StatisticPer = props => {
         {props.val
           .toFixed(1)
           .toString()
-          .concat(" %")}{" "}
+          .concat(' %')}{' '}
       </td>
     </tr>
   );
@@ -72,10 +72,10 @@ class App extends React.Component {
     };
   }
 
-  increment = state => {
+  increment = stateVal => {
     return () => {
       this.setState(
-        prevState => ({ [state]: prevState[state] + 1 }),
+        prevState => ({ [stateVal]: prevState[stateVal] + 1 }),
         () => this.calcStats()
       );
     };
@@ -108,9 +108,9 @@ class App extends React.Component {
     return (
       <div>
         <Title teksti="Anna palautetta" />
-        <Button onclick={this.increment("hyva")} title="Hyvä" />
-        <Button onclick={this.increment("neutraali")} title="Neutraali" />
-        <Button onclick={this.increment("huono")} title="Huono" />
+        <Button onclick={this.increment('hyva')} title="Hyvä" />
+        <Button onclick={this.increment('neutraali')} title="Neutraali" />
+        <Button onclick={this.increment('huono')} title="Huono" />
         <Title teksti="Statistiikkaa" />
 
         {this.isIncremented() ? (
@@ -123,4 +123,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));

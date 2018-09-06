@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 const Otsikko = props => {
   return (
@@ -40,12 +40,12 @@ const Yhteensa = props => {
 };
 
 const App = () => {
-  const kurssi = "Half Stack -sovelluskehitys";
-  const osa1 = "Reactin perusteet";
+  const kurssi = 'Half Stack -sovelluskehitys';
+  const osa1 = 'Reactin perusteet';
   const tehtavia1 = 10;
-  const osa2 = "Tiedonvälitys propseilla";
+  const osa2 = 'Tiedonvälitys propseilla';
   const tehtavia2 = 7;
-  const osa3 = "Komponenttien tila";
+  const osa3 = 'Komponenttien tila';
   const tehtavia3 = 14;
 
   return (
@@ -68,4 +68,4 @@ const App = () => {
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));

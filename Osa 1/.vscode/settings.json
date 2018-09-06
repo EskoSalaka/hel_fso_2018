@@ -1,0 +1,8 @@
+// Place your settings in this file to overwrite the default settings
+{
+  "python.pythonPath": "C:\\Users\\esko\\AppData\\Local\\Programs\\Python\\Python35\\python.exe",
+  "editor.tabSize": 2,
+  "editor.snippetSuggestions": "top",
+  "prettier.semi": true,
+  "prettier.singleQuote": true,
+}
