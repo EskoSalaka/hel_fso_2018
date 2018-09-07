@@ -122,7 +122,7 @@ describe('most likes', () => {
       author: 'Edsger W. Dijkstra',
       url:
         'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-      likes: 5,
+      likes: 12,
       __v: 0
     },
     {
@@ -148,7 +148,7 @@ describe('most likes', () => {
       author: 'Robert C. Martin',
       url:
         'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
-      likes: 0,
+      likes: 2,
       __v: 0
     },
     {
@@ -171,8 +171,8 @@ describe('most likes', () => {
     expect(result).toEqual(listWithOneBlog[0]);
   });
 
-  test('when list has many blogs equals the favourite the one with most likes (the third blog with 12 likes)', () => {
+  test('when list has many blogs of which some have the same amount of likes equals the favourite is the first one with most likes (the second blog with 12 likes)', () => {
     const result = listHelper.favoriteBlog(listWithManyBlogs);
-    expect(result).toEqual(listWithManyBlogs[2]);
+    expect(result).toEqual(listWithManyBlogs[1]);
   });
 });
