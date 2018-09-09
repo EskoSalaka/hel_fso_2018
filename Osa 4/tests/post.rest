@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Test post",
-  "author": "Esko",
-  "url": "www.microsoft.com",
-  "likes": 1002
+  "title": "Test post 3",
+  "author": "Esko3",
+  "url": "www.microsoft3.com",
+  "likes": 3
 }

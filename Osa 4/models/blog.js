@@ -5,9 +5,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const mongoUrl = process.env.MONGODB_URI;
-console.log(mongoUrl);
+//console.log(mongoUrl);
 
-mongoose.connect(mongoUrl);
+mongoose.connect(
+  mongoUrl,
+  { useNewUrlParser: true }
+);
 
 const Blog = mongoose.model('Blog', {
   title: String,
