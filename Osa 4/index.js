@@ -8,7 +8,10 @@ const config = require('./utils/config');
 const mongoose = require('mongoose');
 
 mongoose
-  .connect(config.mongoUrl)
+  .connect(
+    config.mongoUrl,
+    { useNewUrlParser: true }
+  )
   .then(() => {
     console.log('connected to database', config.mongoUrl);
   })
