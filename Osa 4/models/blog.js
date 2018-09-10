@@ -4,14 +4,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
-const mongoUrl = process.env.MONGODB_URI;
-//console.log(mongoUrl);
-
-mongoose.connect(
-  mongoUrl,
-  { useNewUrlParser: true }
-);
-
 const Blog = mongoose.model('Blog', {
   title: String,
   author: String,

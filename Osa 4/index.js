@@ -7,17 +7,11 @@ const blogsRouter = require('./controllers/blogs');
 const config = require('./utils/config');
 const mongoose = require('mongoose');
 
-mongoose
-  .connect(
-    config.mongoUrl,
-    { useNewUrlParser: true }
-  )
-  .then(() => {
-    console.log('connected to database', config.mongoUrl);
-  })
-  .catch(err => {
-    console.log(err);
-  });
+mongoose.connect(
+  config.mongoUrl,
+  { useNewUrlParser: true }
+);
+mongoose.Promise = global.Promise;
 
 app.use(cors());
 app.use(bodyParser.json());
