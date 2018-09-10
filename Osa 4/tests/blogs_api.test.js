@@ -36,9 +36,9 @@ describe('testing GET with database which has initial blogs', async () => {
 describe('testing POST with a database which has initial blogs', async () => {
   test('posting valid blog should return 200, posted json object', async () => {
     const newValidBlog = {
-      title: 'Test post POST',
-      author: 'Esko POST',
-      url: 'www.microsoftPOST.com',
+      title: 'Test post POST VALID',
+      author: 'Esko POST VALID',
+      url: 'www.microsoftPOST.com VALID',
       likes: 1
     };
 
@@ -63,9 +63,9 @@ describe('testing POST with a database which has initial blogs', async () => {
 
   test('posting blog with missing title should return 400 and fail', async () => {
     const newInvalidBlog = {
-      author: 'Esko POST',
-      url: 'www.microsoftPOST.com',
-      likes: 1
+      author: 'Esko POST MISSING TITLE',
+      url: 'www.microsoftPOST.com MISSING TITLE',
+      likes: 2
     };
 
     blogsBeforePost = await getFormattedBlogsInDb();
@@ -82,9 +82,9 @@ describe('testing POST with a database which has initial blogs', async () => {
 
   test('posting blog with missing url should return 400 and fail', async () => {
     const newInvalidBlog = {
-      title: 'Test post POST',
-      author: 'Esko POST',
-      likes: 1
+      title: 'Test post POST MISSING URL',
+      author: 'Esko POST MISSING URL',
+      likes: 3
     };
 
     blogsBeforePost = await getFormattedBlogsInDb();
@@ -101,9 +101,9 @@ describe('testing POST with a database which has initial blogs', async () => {
 
   test('posting blog with missing likes should return 200 and set likes to 0', async () => {
     const newValidBlog = {
-      title: 'Test post POST',
-      author: 'Esko POST',
-      url: 'www.microsoftPOST.com'
+      title: 'Test post POST MISSING LIKES',
+      author: 'Esko POST MISSING LIKES',
+      url: 'www.microsoftPOST.com MISSING LIKES'
     };
 
     blogsBeforePost = await getFormattedBlogsInDb();
@@ -127,6 +127,32 @@ describe('testing POST with a database which has initial blogs', async () => {
 
     expect(blogsAfterPost.length).toBe(blogsBeforePost.length + 1);
     expect(stringifiedBlogs).toContain(JSON.stringify(newValidBlog));
+  });
+});
+
+describe('testing DELETE with a database which has initial blogs', async () => {
+  let blogForDELETE;
+
+  beforeAll(async () => {
+    blogForDELETE = new Blog({
+      title: 'Test post DELETE',
+      author: 'Esko DELETE',
+      url: 'www.microsoftPOST.com DELETE',
+      likes: 100
+    });
+    await blogForDELETE.save();
+  });
+
+  test('deleting a blog found in the database should return 204 and remove it', async () => {
+    blogsBeforeDelete = await getFormattedBlogsInDb();
+
+    await api.delete(`/api/blogs/${blogForDELETE._id}`).expect(204);
+
+    const blogsAfterDelete = await getFormattedBlogsInDb();
+    const stringifiedBlogs = blogsAfterDelete.map(JSON.stringify);
+
+    expect(blogsAfterDelete.length).toBe(blogsBeforeDelete.length - 1);
+    expect(stringifiedBlogs).not.toContain(JSON.stringify(blogForDELETE));
   });
 });
 
