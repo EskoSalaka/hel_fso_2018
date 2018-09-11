@@ -2,19 +2,28 @@ const supertest = require('supertest');
 const { app, server } = require('../index');
 const api = supertest(app);
 const Blog = require('../models/blog');
+const User = require('../models/user');
+
 const {
   initialBlogs,
+  initialUsers,
   format,
-  getFormattedBlogsInDb
+  getFormattedBlogsInDb,
+  getFormattedUsersInDb
 } = require('./tests_helper');
 
-describe('testing methoids with initial data', async () => {
+describe('testing API with initial data', async () => {
   beforeAll(async () => {
     console.log('BEF');
     await Blog.remove({});
 
     const newBlogs = initialBlogs.map(blog => new Blog(blog));
     await Promise.all(newBlogs.map(blog => blog.save()));
+
+    await User.remove({});
+
+    const newUsers = initialUsers.map(user => new User(user));
+    await Promise.all(newUsers.map(user => user.save()));
     console.log('DONE');
   });
 
@@ -194,30 +203,6 @@ describe('testing methoids with initial data', async () => {
       expect(blogsAfterPUT).toContainEqual(blogModified);
     });
 
-    test('modifying a blog found in the database should return 200 and modify it', async () => {
-      const blogsBeforePUT = await getFormattedBlogsInDb();
-
-      const blogModified = {
-        title: 'Test post PUT MOD',
-        author: 'Esko PUT MOD',
-        url: 'www.microsoftPOST.com PUT MOD',
-        likes: 1001
-      };
-
-      const response = await api
-        .put(`/api/blogs/${blogForPUT._id}`)
-        .send(blogModified)
-        .expect(200)
-        .expect('Content-Type', /application\/json/);
-
-      expect(format(response.body)).toEqual(blogModified);
-
-      const blogsAfterPUT = await getFormattedBlogsInDb();
-      expect(blogsAfterPUT.length).toBe(blogsBeforePUT.length);
-      expect(blogsAfterPUT).toContainEqual(blogModified);
-      console.log(blogsBeforePUT.length, blogsAfterPUT.length);
-    });
-
     test('partly modifying a blog found in the database should return 200 and modify it', async () => {
       const blogsBeforePUT = await getFormattedBlogsInDb();
 
@@ -237,6 +222,89 @@ describe('testing methoids with initial data', async () => {
       expect(blogsAfterPUT.length).toBe(blogsBeforePUT.length);
       const bb = await Blog.findOne({ _id: blogForPUT._id });
       expect(bb.likes).toBe(blogModified.likes);
+    });
+  });
+
+  describe('testing adding Users', async () => {
+    test('adding a valid user should return 200 and add the user in the db', async () => {
+      const usersBeforePost = await getFormattedUsersInDb();
+
+      const newUser = {
+        username: 'Test User TEST1',
+        name: 'Erkki TEST1',
+        adult: 'true',
+        password: 'asdf1234'
+      };
+
+      const response = await api
+        .post('/api/users/')
+        .send(newUser)
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
+      expect(response.body.username).toEqual(newUser.username);
+
+      const usersAfterPost = await getFormattedUsersInDb();
+      expect(usersAfterPost.length).toBe(usersBeforePost.length + 1);
+      expect(JSON.stringify(usersAfterPost)).toContain(
+        JSON.stringify(response.body)
+      );
+    });
+
+    test('adding a user without specifying "adult" should return 200 and add the user in the db with "adult" true', async () => {
+      const usersBeforePost = await getFormattedUsersInDb();
+
+      const newUser = {
+        username: 'Test User TEST2',
+        name: 'Erkki TEST2',
+        password: 'asdf1234'
+      };
+
+      const response = await api
+        .post('/api/users/')
+        .send(newUser)
+        .expect(200)
+        .expect('Content-Type', /application\/json/);
+
+      expect(response.body.adult).toEqual(true);
+
+      const usersAfterPost = await getFormattedUsersInDb();
+      expect(usersAfterPost.length).toBe(usersBeforePost.length + 1);
+      expect(JSON.stringify(usersAfterPost)).toContain(
+        JSON.stringify(response.body)
+      );
+    });
+
+    test('adding users with password length < 3 fails', async () => {
+      const usersBeforePost = await getFormattedUsersInDb();
+
+      const newUser = {
+        username: 'Test User TEST3',
+        name: 'Erkki TEST3',
+        password: 'as'
+      };
+
+      const response = await api
+        .post('/api/users/')
+        .send(newUser)
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
+    });
+
+    test('adding users with taken "username" fails', async () => {
+      const usersBeforePost = await getFormattedUsersInDb();
+
+      const newUser = {
+        username: 'Test User1',
+        name: 'Erkki1',
+        password: 'asdf1234'
+      };
+
+      const response = await api
+        .post('/api/users/')
+        .send(newUser)
+        .expect(400)
+        .expect('Content-Type', /application\/json/);
     });
   });
 

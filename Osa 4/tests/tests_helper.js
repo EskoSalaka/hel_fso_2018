@@ -22,6 +22,27 @@ const initialBlogs = [
   }
 ];
 
+const initialUsers = [
+  {
+    username: 'Test User1',
+    name: 'Erkki1',
+    adult: 'false',
+    password: 'asdf1234'
+  },
+  {
+    username: 'Test User2',
+    name: 'Erkki2',
+    adult: 'false',
+    password: 'asdf1234'
+  },
+  {
+    username: 'Test User3',
+    name: 'Erkki3',
+    adult: 'true',
+    password: 'asdf1234'
+  }
+];
+
 const format = blog => {
   return {
     title: blog.title,
@@ -41,13 +62,16 @@ const getFormattedBlogsInDb = async () => {
   return blogs.map(format);
 };
 
-const getUsersInDb = async () => {
+const getFormattedUsersInDb = async () => {
   const users = await User.find({});
-  return users;
+  return users.map(User.format);
 };
 
 module.exports = {
   initialBlogs,
   format,
-  getFormattedBlogsInDb
+  getBlogsInDb,
+  getFormattedBlogsInDb,
+  getFormattedUsersInDb,
+  initialUsers
 };
