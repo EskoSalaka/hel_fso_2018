@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QgVXNlciIsImlkIjoiNWI5N2M2MzcyZGI0ZTkwY2NjMDAwMmMwIiwiaWF0IjoxNTM2NzM2ODUxfQ.IztsddN1l-u49oZrMHBvddiPD5P_PLvRM4vXA--XtJo
+
+{
+  "title": "Test post with auth2",
+  "author": "Erkki",
+  "url": "www.microsoftAUTH2.com",
+  "likes": 300,
+  "userId": "5b97d3ec0764922fcc6c5e20"
+}
