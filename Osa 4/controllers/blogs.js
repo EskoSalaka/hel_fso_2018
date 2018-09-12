@@ -22,19 +22,10 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
   try {
-    let token;
-    let decodedToken;
-
     const body = request.body;
-    const auth = request.get('authorization');
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
-    if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      token = auth.substring(7);
-      decodedToken = jwt.verify(token, process.env.SECRET);
-    }
-    console.log(token, decodedToken);
-
-    if (!token || !decodedToken.id) {
+    if (!request.token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' });
     }
 
