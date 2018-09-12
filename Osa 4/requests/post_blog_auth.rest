@@ -6,6 +6,5 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc
   "title": "Test post with auth3",
   "author": "Erkki",
   "url": "www.microsoftAUTH3.com",
-  "likes": 300,
-  "userId": "5b97d3ec0764922fcc6c5e20"
+  "likes": 300
 }

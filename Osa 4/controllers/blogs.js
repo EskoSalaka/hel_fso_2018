@@ -23,10 +23,19 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   try {
     const body = request.body;
+
+    if (!request.token) {
+      return response
+        .status(401)
+        .json({ error: 'Unauthorized: token missing or invalid' });
+    }
+
     const decodedToken = jwt.verify(request.token, process.env.SECRET);
 
-    if (!request.token || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' });
+    if (!decodedToken.id) {
+      return response
+        .status(401)
+        .json({ error: 'Unauthorized: token missing or invalid' });
     }
 
     if (body.title === undefined || body.url === undefined) {
@@ -55,11 +64,40 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
   try {
-    await Blog.findByIdAndRemove(request.params.id);
-    response.status(204).end();
+    console.log(request.token);
+
+    if (!request.token) {
+      return response
+        .status(401)
+        .json({ error: 'Unauthorized: token missing or invalid' });
+    }
+
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
+    if (!decodedToken.id) {
+      return response
+        .status(401)
+        .json({ error: 'Unauthorized: token missing or invalid' });
+    }
+
+    const verifiedUser = await User.findById(decodedToken.id);
+    const blog = await Blog.findById(request.params.id);
+
+    if (!blog) {
+      response.status(204).end();
+    }
+
+    if (blog.user._id.toString() === verifiedUser._id.toString()) {
+      await Blog.findByIdAndRemove(request.params.id);
+      response.status(204).end();
+    } else {
+      response
+        .status(403)
+        .json({ error: 'Unauthorized: users can only delete their own posts' });
+    }
   } catch (exception) {
     console.log(exception);
-    response.status(400).send({ error: 'malformatted id' });
+    response.status(400).send({ error: String(exception) });
   }
 });
 
