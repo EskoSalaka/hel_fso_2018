@@ -8,18 +8,18 @@ const blogSchema = new mongoose.Schema({
   title: String,
   author: String,
   url: String,
-  likes: Number
-  //user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  likes: Number,
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
 blogSchema.statics.format = blog => {
   return {
-    id: blog._id,
+    _id: blog._id,
     title: blog.title,
     author: blog.author,
     url: blog.url,
-    likes: blog.likes
-    //user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    likes: blog.likes,
+    user: blog.user
   };
 };
 
