@@ -1,6 +1,7 @@
 import React from 'react';
 import Blogs from './components/Blogs';
 import LoginForm from './components/LoginForm';
+import NewBlogForm from './components/NewBlogForm';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -13,27 +14,34 @@ class App extends React.Component {
       loggedinUsername: '',
       user: null,
       error: '',
-      newBlog: '',
+      author: '',
+      title: '',
+      url: '',
       blogs: []
     };
 
-    this.handleLoginFieldChange = this.handleLoginFieldChange.bind(this);
+    this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+    this.postNewBlog = this.postNewBlog.bind(this);
   }
 
-  componentDidMount() {
-    blogService.getAllBlogs().then(blogs => this.setState({ blogs }));
+  componentDidMount = async () => {
+    console.log('Component did mount');
+    const blogs = await blogService.getAllBlogs();
+    this.setState({ blogs });
 
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser');
     if (loggedInUserJSON) {
       const loggedInUser = JSON.parse(loggedInUserJSON);
+
       this.setState({
         user: loggedInUser.token,
         loggedinUsername: loggedInUser.username
       });
+      blogService.setToken(loggedInUser.token);
     }
-  }
+  };
 
   login = async event => {
     event.preventDefault();
@@ -53,10 +61,10 @@ class App extends React.Component {
         user: user.token
       });
     } catch (exception) {
-      console.log(exception);
-
       this.setState({
-        error: 'wrong username or password'
+        error:
+          'Something went wrong with logging in: ' +
+          String(exception.response.data.error)
       });
       setTimeout(() => {
         this.setState({ error: null });
@@ -87,7 +95,42 @@ class App extends React.Component {
     }
   };
 
-  handleLoginFieldChange = event => {
+  postNewBlog = async event => {
+    event.preventDefault();
+
+    try {
+      const newBlog = {
+        title: this.state.title,
+        author: this.state.author,
+        url: this.state.url
+      };
+
+      const addedBlog = await blogService.addBlog(newBlog);
+      console.log(addedBlog);
+
+      this.setState({
+        blogs: this.state.blogs.concat(addedBlog),
+        title: '',
+        author: '',
+        url: ''
+      });
+    } catch (exception) {
+      console.log(exception.response.data.error);
+
+      this.setState({
+        error:
+          'something went wrong with posting new blog: ' +
+          String(exception.response.data.error)
+      });
+      console.log(this.state.error);
+
+      setTimeout(() => {
+        this.setState({ error: null });
+      }, 5000);
+    }
+  };
+
+  handleTextFieldChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
@@ -97,7 +140,7 @@ class App extends React.Component {
         <LoginForm
           username={this.state.username}
           password={this.state.password}
-          handleChange={this.handleLoginFieldChange}
+          handleChange={this.handleTextFieldChange}
           handleSubmit={this.login}
         />
       );
@@ -110,6 +153,13 @@ class App extends React.Component {
             logged in as {this.state.loggedinUsername}{' '}
             <button onClick={this.logout}>log out</button>
           </p>
+          <NewBlogForm
+            handleSubmit={this.postNewBlog}
+            handleChange={this.handleTextFieldChange}
+            title={this.state.title}
+            author={this.state.author}
+            url={this.state.url}
+          />
           <Blogs blogs={this.state.blogs} />
         </div>
       );

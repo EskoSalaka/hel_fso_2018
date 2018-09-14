@@ -16,9 +16,9 @@ const addBlog = async newBlog => {
   return response.data;
 };
 
-const getAllBlogs = () => {
-  const request = axios.get(baseUrl);
-  return request.then(response => response.data);
+const getAllBlogs = async () => {
+  const response = await axios.get(baseUrl);
+  return response.data;
 };
 
 export default { getAllBlogs, addBlog, setToken };
