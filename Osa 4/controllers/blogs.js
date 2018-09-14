@@ -103,7 +103,7 @@ blogsRouter.put('/:id', async (request, response) => {
     const body = request.body;
     let blog = {};
 
-    if (body.title !== undefined) {
+    if (body.title !== undefined && body.title.length !== 0) {
       blog.title = body.title;
     }
 
@@ -111,7 +111,7 @@ blogsRouter.put('/:id', async (request, response) => {
       blog.author = body.author;
     }
 
-    if (body.url !== undefined) {
+    if (body.url !== undefined && body.url.length !== 0) {
       blog.url = body.url;
     }
 
