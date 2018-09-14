@@ -10,6 +10,7 @@ class App extends React.Component {
     this.state = {
       username: '',
       password: '',
+      loggedinUsername: '',
       user: null,
       error: '',
       newBlog: '',
@@ -33,8 +34,9 @@ class App extends React.Component {
       });
 
       this.setState({
-        username: user.username,
-        password: user.password,
+        username: '',
+        password: '',
+        loggedinUsername: user.username,
         user: user.token
       });
     } catch (exception) {
@@ -68,7 +70,7 @@ class App extends React.Component {
     const loggedInView = () => {
       return (
         <div>
-          <p>logged in as {this.state.username} </p>
+          <p>logged in as {this.state.loggedinUsername} </p>
           <Blogs blogs={this.state.blogs} />
         </div>
       );
