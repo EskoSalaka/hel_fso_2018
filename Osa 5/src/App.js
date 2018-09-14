@@ -2,6 +2,8 @@ import React from 'react';
 import Blogs from './components/Blogs';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
+import ErrorNotification from './components/ErrorNotification';
+import SuccessNotification from './components/SuccessNotification';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -13,7 +15,8 @@ class App extends React.Component {
       password: '',
       loggedinUsername: '',
       user: null,
-      error: '',
+      error: null,
+      success: null,
       author: '',
       title: '',
       url: '',
@@ -58,9 +61,16 @@ class App extends React.Component {
         username: '',
         password: '',
         loggedinUsername: user.username,
-        user: user.token
+        user: user.token,
+        success: 'Logged in'
       });
+
+      setTimeout(() => {
+        this.setState({ success: null });
+      }, 5000);
     } catch (exception) {
+      console.log(exception);
+
       this.setState({
         error:
           'Something went wrong with logging in: ' +
@@ -81,8 +91,13 @@ class App extends React.Component {
 
       this.setState({
         loggedinUsername: '',
-        user: null
+        user: null,
+        success: 'Logged out'
       });
+
+      setTimeout(() => {
+        this.setState({ success: null });
+      }, 5000);
     } catch (exception) {
       console.log(exception);
 
@@ -112,18 +127,15 @@ class App extends React.Component {
         blogs: this.state.blogs.concat(addedBlog),
         title: '',
         author: '',
-        url: ''
+        url: '',
+        success: `A new blog "${newBlog.title}" by ${newBlog.author} added`
       });
     } catch (exception) {
-      console.log(exception.response.data.error);
-
       this.setState({
         error:
           'something went wrong with posting new blog: ' +
           String(exception.response.data.error)
       });
-      console.log(this.state.error);
-
       setTimeout(() => {
         this.setState({ error: null });
       }, 5000);
@@ -165,7 +177,13 @@ class App extends React.Component {
       );
     };
 
-    return <div>{this.state.user === null ? loginView() : loggedInView()}</div>;
+    return (
+      <div>
+        <ErrorNotification error={this.state.error} />
+        <SuccessNotification success={this.state.success} />
+        {this.state.user === null ? loginView() : loggedInView()}
+      </div>
+    );
   }
 }
 
