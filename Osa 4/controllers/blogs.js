@@ -30,7 +30,12 @@ blogsRouter.post('/', async (request, response) => {
         .json({ error: 'Unauthorized: token missing or invalid' });
     }
 
-    if (body.title === undefined || body.url === undefined) {
+    if (
+      body.title === undefined ||
+      body.title.length === 0 ||
+      body.url === undefined ||
+      body.url.length === 0
+    ) {
       return response.status(400).json({ error: 'content missing' });
     }
 
