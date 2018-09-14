@@ -1,6 +1,6 @@
 import React from 'react';
-import Blogs from './components/Blog';
-import LoginForm from './components/login_form';
+import Blogs from './components/Blogs';
+import LoginForm from './components/LoginForm';
 import blogService from './services/blogs';
 import loginService from './services/login';
 
@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    blogService.getAll().then(blogs => this.setState({ blogs }));
+    blogService.getAllBlogs().then(blogs => this.setState({ blogs }));
 
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser');
     if (loggedInUserJSON) {
@@ -44,6 +44,7 @@ class App extends React.Component {
       });
 
       window.localStorage.setItem('loggedInUser', JSON.stringify(user));
+      blogService.setToken(user.token);
 
       this.setState({
         username: '',
@@ -68,6 +69,7 @@ class App extends React.Component {
 
     try {
       window.localStorage.removeItem('loggedInUser');
+      blogService.setToken('');
 
       this.setState({
         loggedinUsername: '',
