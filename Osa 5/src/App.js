@@ -19,10 +19,20 @@ class App extends React.Component {
 
     this.handleLoginFieldChange = this.handleLoginFieldChange.bind(this);
     this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
     blogService.getAll().then(blogs => this.setState({ blogs }));
+
+    const loggedInUserJSON = window.localStorage.getItem('loggedInUser');
+    if (loggedInUserJSON) {
+      const loggedInUser = JSON.parse(loggedInUserJSON);
+      this.setState({
+        user: loggedInUser.token,
+        loggedinUsername: loggedInUser.username
+      });
+    }
   }
 
   login = async event => {
@@ -32,6 +42,8 @@ class App extends React.Component {
         username: this.state.username,
         password: this.state.password
       });
+
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user));
 
       this.setState({
         username: '',
@@ -43,7 +55,29 @@ class App extends React.Component {
       console.log(exception);
 
       this.setState({
-        error: 'käyttäjätunnus tai salasana virheellinen'
+        error: 'wrong username or password'
+      });
+      setTimeout(() => {
+        this.setState({ error: null });
+      }, 5000);
+    }
+  };
+
+  logout = async event => {
+    event.preventDefault();
+
+    try {
+      window.localStorage.removeItem('loggedInUser');
+
+      this.setState({
+        loggedinUsername: '',
+        user: null
+      });
+    } catch (exception) {
+      console.log(exception);
+
+      this.setState({
+        error: 'something went wrong logging out'
       });
       setTimeout(() => {
         this.setState({ error: null });
@@ -70,7 +104,10 @@ class App extends React.Component {
     const loggedInView = () => {
       return (
         <div>
-          <p>logged in as {this.state.loggedinUsername} </p>
+          <p>
+            logged in as {this.state.loggedinUsername}{' '}
+            <button onClick={this.logout}>log out</button>
+          </p>
           <Blogs blogs={this.state.blogs} />
         </div>
       );
