@@ -2,6 +2,7 @@ import React from 'react';
 import Blogs from './components/Blogs';
 import LoginForm from './components/LoginForm';
 import NewBlogForm from './components/NewBlogForm';
+import Togglable from './components/Togglable';
 import ErrorNotification from './components/ErrorNotification';
 import SuccessNotification from './components/SuccessNotification';
 import blogService from './services/blogs';
@@ -153,12 +154,14 @@ class App extends React.Component {
   render() {
     const loginView = () => {
       return (
-        <LoginForm
-          username={this.state.username}
-          password={this.state.password}
-          handleChange={this.handleTextFieldChange}
-          handleSubmit={this.login}
-        />
+        <Togglable buttonLabel="Login">
+          <LoginForm
+            username={this.state.username}
+            password={this.state.password}
+            handleChange={this.handleTextFieldChange}
+            handleSubmit={this.login}
+          />
+        </Togglable>
       );
     };
 

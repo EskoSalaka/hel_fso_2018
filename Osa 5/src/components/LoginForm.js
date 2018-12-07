@@ -23,7 +23,7 @@ const LoginForm = ({ handleSubmit, handleChange, username, password }) => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">kirjaudu</button>
+        <button type="submit">Login</button>
       </form>
     </div>
   );
