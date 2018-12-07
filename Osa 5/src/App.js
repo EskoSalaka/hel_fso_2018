@@ -154,14 +154,12 @@ class App extends React.Component {
   render() {
     const loginView = () => {
       return (
-        <Togglable buttonLabel="Login">
-          <LoginForm
-            username={this.state.username}
-            password={this.state.password}
-            handleChange={this.handleTextFieldChange}
-            handleSubmit={this.login}
-          />
-        </Togglable>
+        <LoginForm
+          username={this.state.username}
+          password={this.state.password}
+          handleChange={this.handleTextFieldChange}
+          handleSubmit={this.login}
+        />
       );
     };
 
@@ -172,13 +170,15 @@ class App extends React.Component {
             logged in as {this.state.loggedinUsername}{' '}
             <button onClick={this.logout}>log out</button>
           </p>
-          <NewBlogForm
-            handleSubmit={this.postNewBlog}
-            handleChange={this.handleTextFieldChange}
-            title={this.state.title}
-            author={this.state.author}
-            url={this.state.url}
-          />
+          <Togglable buttonLabel="New Blog">
+            <NewBlogForm
+              handleSubmit={this.postNewBlog}
+              handleChange={this.handleTextFieldChange}
+              title={this.state.title}
+              author={this.state.author}
+              url={this.state.url}
+            />
+          </Togglable>
           <Blogs blogs={this.state.blogs} />
         </div>
       );
