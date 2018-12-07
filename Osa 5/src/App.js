@@ -130,6 +130,10 @@ class App extends React.Component {
         url: '',
         success: `A new blog "${newBlog.title}" by ${newBlog.author} added`
       });
+
+      setTimeout(() => {
+        this.setState({ success: null });
+      }, 5000);
     } catch (exception) {
       this.setState({
         error:
