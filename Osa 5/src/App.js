@@ -113,6 +113,7 @@ class App extends React.Component {
 
   postNewBlog = async event => {
     event.preventDefault();
+    this.newBlogForm.toggleVisibility();
 
     try {
       const newBlog = {
@@ -121,11 +122,10 @@ class App extends React.Component {
         url: this.state.url
       };
 
-      const addedBlog = await blogService.addBlog(newBlog);
-      console.log(addedBlog);
+      await blogService.addBlog(newBlog);
 
       this.setState({
-        blogs: this.state.blogs.concat(addedBlog),
+        blogs: await blogService.getAllBlogs(),
         title: '',
         author: '',
         url: '',
@@ -144,6 +144,37 @@ class App extends React.Component {
       setTimeout(() => {
         this.setState({ error: null });
       }, 5000);
+    }
+  };
+
+  addLike = async event => {
+    event.preventDefault();
+    let id = event.target.value;
+
+    try {
+      let blog = this.state.blogs.find(b => {
+        return b._id === id;
+      });
+
+      const updatedBlog = {
+        user: blog.user._id,
+        likes: blog.likes + 1,
+        author: blog.author,
+        url: blog.url,
+        title: blog.title
+      };
+
+      await blogService.updateBlog(event.target.value, updatedBlog);
+
+      this.setState({
+        blogs: await blogService.getAllBlogs()
+      });
+    } catch (exception) {
+      this.setState({
+        error:
+          'something went wrong with liking: ' +
+          String(exception.response.data.error)
+      });
     }
   };
 
@@ -170,7 +201,10 @@ class App extends React.Component {
             logged in as {this.state.loggedinUsername}{' '}
             <button onClick={this.logout}>log out</button>
           </p>
-          <Togglable buttonLabel="New Blog">
+          <Togglable
+            buttonLabel="New Blog"
+            ref={component => (this.newBlogForm = component)}
+          >
             <NewBlogForm
               handleSubmit={this.postNewBlog}
               handleChange={this.handleTextFieldChange}
@@ -179,7 +213,7 @@ class App extends React.Component {
               url={this.state.url}
             />
           </Togglable>
-          <Blogs blogs={this.state.blogs} />
+          <Blogs blogs={this.state.blogs} addLike={this.addLike} />
         </div>
       );
     };

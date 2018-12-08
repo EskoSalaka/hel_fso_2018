@@ -1,7 +1,9 @@
 import React from 'react';
+
 class Blog extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       expanded: false
     };
@@ -28,7 +30,12 @@ class Blog extends React.Component {
           blog={this.props.blog}
           handleTitleClick={this.toggleExpanded}
         />
-        {this.state.expanded ? <HiddenLines blog={this.props.blog} /> : null}
+        {this.state.expanded ? (
+          <HiddenLines
+            blog={this.props.blog}
+            handleLikeButtonClick={this.props.addLike}
+          />
+        ) : null}
       </div>
     );
   }
@@ -50,7 +57,7 @@ const HiddenLines = ({ blog, handleLikeButtonClick }) => {
       <p>
         {' '}
         {blog.likes} Likes{' '}
-        <button type="like" onClick={handleLikeButtonClick}>
+        <button type="like" onClick={handleLikeButtonClick} value={blog._id}>
           Like
         </button>
       </p>
@@ -59,13 +66,13 @@ const HiddenLines = ({ blog, handleLikeButtonClick }) => {
   );
 };
 
-const Blogs = ({ blogs }) => {
+const Blogs = ({ blogs, addLike }) => {
   return (
     <div>
       <h2>Blogs</h2>
       <div>
         {blogs.map(b => (
-          <Blog key={b._id} blog={b} />
+          <Blog key={b._id} blog={b} addLike={addLike} />
         ))}
       </div>
     </div>
