@@ -32,7 +32,8 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     console.log('Component did mount');
-    const blogs = await blogService.getAllBlogs();
+    let blogs = await blogService.getAllBlogs();
+    blogs = blogs.sort((a, b) => a.likes < b.likes);
     this.setState({ blogs });
 
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser');
@@ -165,9 +166,11 @@ class App extends React.Component {
       };
 
       await blogService.updateBlog(event.target.value, updatedBlog);
+      let blogs = await blogService.getAllBlogs();
+      blogs = blogs.sort((a, b) => a.likes < b.likes);
 
       this.setState({
-        blogs: await blogService.getAllBlogs()
+        blogs: blogs
       });
     } catch (exception) {
       this.setState({
