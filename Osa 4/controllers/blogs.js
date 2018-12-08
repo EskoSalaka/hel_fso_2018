@@ -53,7 +53,7 @@ blogsRouter.post('/', async (request, response) => {
     verifiedUser.blogs = verifiedUser.blogs.concat(savedBlog._id);
     await verifiedUser.save();
 
-    response.status(200).json(savedBlog);
+    response.status(200).json(Blog.format(savedBlog));
   } catch (exception) {
     response.status(500).json({ error: String(exception) });
   }
@@ -123,7 +123,7 @@ blogsRouter.put('/:id', async (request, response) => {
       new: true
     });
 
-    response.status(200).json(updatedBlog);
+    response.status(200).json(Blog.format(updatedBlog));
   } catch (exception) {
     console.log(exception);
     response.status(400).send({ error: 'malformatted id' });
