@@ -3,6 +3,8 @@ import React from 'react';
 class Blog extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props.isUserBlog);
+    console.log(props.blog);
 
     this.state = {
       expanded: false
@@ -35,6 +37,7 @@ class Blog extends React.Component {
             blog={this.props.blog}
             addLike={this.props.addLike}
             deleteBlog={this.props.deleteBlog}
+            isUserBlog={this.props.isUserBlog}
           />
         ) : null}
       </div>
@@ -50,7 +53,7 @@ const BlogTitle = ({ blog, handleTitleClick }) => {
   );
 };
 
-const HiddenLines = ({ blog, addLike, deleteBlog }) => {
+const HiddenLines = ({ blog, addLike, deleteBlog, isUserBlog }) => {
   let uName = blog.user === undefined ? 'Anonymous' : blog.user.name;
 
   return (
@@ -65,14 +68,16 @@ const HiddenLines = ({ blog, addLike, deleteBlog }) => {
         </button>
       </p>
       <p> Added by {uName}</p>
-      <button type="delete" onClick={deleteBlog} value={blog._id}>
-        Delete Blog
-      </button>
+      {isUserBlog ? (
+        <button type="delete" onClick={deleteBlog} value={blog._id}>
+          Delete Blog
+        </button>
+      ) : null}
     </div>
   );
 };
 
-const Blogs = ({ blogs, addLike, deleteBlog }) => {
+const Blogs = ({ blogs, addLike, deleteBlog, userName }) => {
   return (
     <div>
       <h2>Blogs</h2>
@@ -83,6 +88,11 @@ const Blogs = ({ blogs, addLike, deleteBlog }) => {
             blog={b}
             addLike={addLike}
             deleteBlog={deleteBlog}
+            isUserBlog={
+              b.user === undefined || b.user.username === userName
+                ? true
+                : false
+            }
           />
         ))}
       </div>

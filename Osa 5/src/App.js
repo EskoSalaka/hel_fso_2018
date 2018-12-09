@@ -66,6 +66,7 @@ class App extends React.Component {
         user: user.token,
         success: 'Logged in'
       });
+      console.log(this.state.loggedinUsername);
 
       setTimeout(() => {
         this.setState({ success: null });
@@ -189,7 +190,7 @@ class App extends React.Component {
       return b._id === event.target.value;
     });
 
-    if (window.confirm(`A new blog "${blog.title}" by ${blog.author}?`)) {
+    if (window.confirm(`Delete "${blog.title}" by ${blog.author}?`)) {
       try {
         await blogService.deleteBlog(event.target.value);
         let blogs = await blogService.getAllBlogs();
@@ -249,6 +250,7 @@ class App extends React.Component {
             blogs={this.state.blogs}
             addLike={this.addLike}
             deleteBlog={this.deleteBlog}
+            userName={this.state.loggedinUsername}
           />
         </div>
       );
