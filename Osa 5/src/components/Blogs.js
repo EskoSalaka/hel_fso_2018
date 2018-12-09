@@ -33,7 +33,8 @@ class Blog extends React.Component {
         {this.state.expanded ? (
           <HiddenLines
             blog={this.props.blog}
-            handleLikeButtonClick={this.props.addLike}
+            addLike={this.props.addLike}
+            deleteBlog={this.props.deleteBlog}
           />
         ) : null}
       </div>
@@ -49,7 +50,9 @@ const BlogTitle = ({ blog, handleTitleClick }) => {
   );
 };
 
-const HiddenLines = ({ blog, handleLikeButtonClick }) => {
+const HiddenLines = ({ blog, addLike, deleteBlog }) => {
+  let uName = blog.user === undefined ? 'Anonymous' : blog.user.name;
+
   return (
     <div>
       <a href={'//' + blog.url}>{blog.url}</a>
@@ -57,22 +60,30 @@ const HiddenLines = ({ blog, handleLikeButtonClick }) => {
       <p>
         {' '}
         {blog.likes} Likes{' '}
-        <button type="like" onClick={handleLikeButtonClick} value={blog._id}>
+        <button type="like" onClick={addLike} value={blog._id}>
           Like
         </button>
       </p>
-      <p> Added by {blog.user.name}</p>
+      <p> Added by {uName}</p>
+      <button type="delete" onClick={deleteBlog} value={blog._id}>
+        Delete Blog
+      </button>
     </div>
   );
 };
 
-const Blogs = ({ blogs, addLike }) => {
+const Blogs = ({ blogs, addLike, deleteBlog }) => {
   return (
     <div>
       <h2>Blogs</h2>
       <div>
         {blogs.map(b => (
-          <Blog key={b._id} blog={b} addLike={addLike} />
+          <Blog
+            key={b._id}
+            blog={b}
+            addLike={addLike}
+            deleteBlog={deleteBlog}
+          />
         ))}
       </div>
     </div>

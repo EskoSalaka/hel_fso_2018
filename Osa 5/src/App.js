@@ -151,6 +151,7 @@ class App extends React.Component {
   addLike = async event => {
     event.preventDefault();
     let id = event.target.value;
+    console.log(id);
 
     try {
       let blog = this.state.blogs.find(b => {
@@ -158,7 +159,7 @@ class App extends React.Component {
       });
 
       const updatedBlog = {
-        user: blog.user._id,
+        user: blog.user === undefined ? null : blog.user._id,
         likes: blog.likes + 1,
         author: blog.author,
         url: blog.url,
@@ -178,6 +179,34 @@ class App extends React.Component {
           'something went wrong with liking: ' +
           String(exception.response.data.error)
       });
+    }
+  };
+
+  deleteBlog = async event => {
+    event.preventDefault();
+
+    let blog = this.state.blogs.find(b => {
+      return b._id === event.target.value;
+    });
+
+    if (window.confirm(`A new blog "${blog.title}" by ${blog.author}?`)) {
+      try {
+        await blogService.deleteBlog(event.target.value);
+        let blogs = await blogService.getAllBlogs();
+        blogs = blogs.sort((a, b) => a.likes < b.likes);
+
+        this.setState({ blogs: blogs });
+      } catch (exception) {
+        this.setState({
+          error:
+            'something went wrong with deleting post: ' +
+            String(exception.response.data.error)
+        });
+
+        setTimeout(() => {
+          this.setState({ error: null });
+        }, 5000);
+      }
     }
   };
 
@@ -216,7 +245,11 @@ class App extends React.Component {
               url={this.state.url}
             />
           </Togglable>
-          <Blogs blogs={this.state.blogs} addLike={this.addLike} />
+          <Blogs
+            blogs={this.state.blogs}
+            addLike={this.addLike}
+            deleteBlog={this.deleteBlog}
+          />
         </div>
       );
     };
