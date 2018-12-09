@@ -84,13 +84,16 @@ blogsRouter.delete('/:id', async (request, response) => {
       response.status(204).end();
     }
 
-    if (blog.user._id.toString() === verifiedUser._id.toString()) {
+    if (
+      blog.user === undefined ||
+      blog.user._id.toString() === verifiedUser._id.toString()
+    ) {
       await Blog.findByIdAndRemove(request.params.id);
       response.status(204).end();
     } else {
-      response
-        .status(403)
-        .json({ error: 'Unauthorized: users can only delete their own posts' });
+      response.status(403).json({
+        error: 'Unauthorized: users can only delete their own posts'
+      });
     }
   } catch (exception) {
     console.log(exception);
