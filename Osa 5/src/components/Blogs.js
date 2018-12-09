@@ -1,10 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Blog extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props.isUserBlog);
-    console.log(props.blog);
 
     this.state = {
       expanded: false
@@ -98,6 +97,13 @@ const Blogs = ({ blogs, addLike, deleteBlog, userName }) => {
       </div>
     </div>
   );
+};
+
+Blogs.propTypes = {
+  blogs: PropTypes.array.isRequired,
+  addLike: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired
 };
 
 export default Blogs;

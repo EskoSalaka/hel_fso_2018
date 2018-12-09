@@ -66,7 +66,6 @@ class App extends React.Component {
         user: user.token,
         success: 'Logged in'
       });
-      console.log(this.state.loggedinUsername);
 
       setTimeout(() => {
         this.setState({ success: null });
@@ -152,7 +151,6 @@ class App extends React.Component {
   addLike = async event => {
     event.preventDefault();
     let id = event.target.value;
-    console.log(id);
 
     try {
       let blog = this.state.blogs.find(b => {
