@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 class Blog extends React.Component {
   constructor(props) {
@@ -26,7 +25,7 @@ class Blog extends React.Component {
     };
 
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className="content">
         <BlogTitle
           blog={this.props.blog}
           handleTitleClick={this.toggleExpanded}
@@ -46,7 +45,7 @@ class Blog extends React.Component {
 
 const BlogTitle = ({ blog, handleTitleClick }) => {
   return (
-    <p onClick={handleTitleClick}>
+    <p onClick={handleTitleClick} className="titleLine">
       {blog.title} {blog.author}
     </p>
   );
@@ -56,7 +55,7 @@ const HiddenLines = ({ blog, addLike, deleteBlog, isUserBlog }) => {
   let uName = blog.user === undefined ? 'Anonymous' : blog.user.name;
 
   return (
-    <div>
+    <div className="togglableContent">
       <a href={'//' + blog.url}>{blog.url}</a>
 
       <p>
@@ -76,34 +75,4 @@ const HiddenLines = ({ blog, addLike, deleteBlog, isUserBlog }) => {
   );
 };
 
-const Blogs = ({ blogs, addLike, deleteBlog, userName }) => {
-  return (
-    <div>
-      <h2>Blogs</h2>
-      <div>
-        {blogs.map(b => (
-          <Blog
-            key={b._id}
-            blog={b}
-            addLike={addLike}
-            deleteBlog={deleteBlog}
-            isUserBlog={
-              b.user === undefined || b.user.username === userName
-                ? true
-                : false
-            }
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-Blogs.propTypes = {
-  blogs: PropTypes.array.isRequired,
-  addLike: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired,
-  userName: PropTypes.string.isRequired
-};
-
-export default Blogs;
+export default Blog;
