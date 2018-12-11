@@ -81,15 +81,13 @@ const Button = props => {
 };
 
 class App extends React.Component {
-  resetStats = () => {};
-
   render() {
     return (
       <div>
         <Title teksti="Anna palautetta" />
         <Button
           onclick={e =>
-            store.dispatch({
+            this.props.store.dispatch({
               type: 'GOOD'
             })
           }
@@ -97,7 +95,7 @@ class App extends React.Component {
         />
         <Button
           onclick={e =>
-            store.dispatch({
+            this.props.store.dispatch({
               type: 'OK'
             })
           }
@@ -105,7 +103,7 @@ class App extends React.Component {
         />
         <Button
           onclick={e =>
-            store.dispatch({
+            this.props.store.dispatch({
               type: 'BAD'
             })
           }
@@ -113,14 +111,14 @@ class App extends React.Component {
         />
         <Title teksti="Statistiikkaa" />
 
-        {isIncremented(store.getState()) ? (
+        {isIncremented(this.props.store.getState()) ? (
           <p>Ei yhtään palautetta annettu</p>
         ) : (
           <div>
-            <Statistics state={store.getState()} />
+            <Statistics state={this.props.store.getState()} />
             <Button
               onclick={e =>
-                store.dispatch({
+                this.props.store.dispatch({
                   type: 'ZERO'
                 })
               }
@@ -134,7 +132,7 @@ class App extends React.Component {
 }
 
 const renderApp = () => {
-  ReactDOM.render(<App />, document.getElementById('root'));
+  ReactDOM.render(<App store={store} />, document.getElementById('root'));
 };
 
 renderApp();
