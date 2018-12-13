@@ -24,7 +24,6 @@ const vote = async anecdote => {
   }
 
   const response = await axios.put(`${url}/${anecdote.id}`, newAnecdote)
-
   return response.data
 }
 

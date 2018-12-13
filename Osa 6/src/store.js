@@ -1,16 +1,15 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import anecdoteReducer from './reducers/anecdoteReducer'
 import notificationReducer from './reducers/notificationReducer'
 import filterReducer from './reducers/filterReducer'
-import timerReducer from './reducers/timerReducer'
+import thunk from 'redux-thunk'
 
 const reducer = combineReducers({
   anecdotes: anecdoteReducer,
   notification: notificationReducer,
-  filter: filterReducer,
-  timer: timerReducer
+  filter: filterReducer
 })
 
-const store = createStore(reducer)
+const store = createStore(reducer, applyMiddleware(thunk))
 
 export default store

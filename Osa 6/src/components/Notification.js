@@ -13,7 +13,7 @@ class Notification extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { notification: state.notification }
+  return { notification: state.notification.message }
 }
 
 const ConnectedNotification = connect(mapStateToProps)(Notification)

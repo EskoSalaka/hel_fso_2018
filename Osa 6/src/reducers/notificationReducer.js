@@ -1,19 +1,39 @@
-const reducer = (store = 'No new notifications', action) => {
+const reducer = (
+  store = { message: 'No new notifications', timer: null },
+  action
+) => {
   if (action.type === 'SETNOTIFICATION') {
-    return action.message
+    if (store.timer) {
+      clearTimeout(store.timer)
+    }
+    return { message: action.message, timer: action.timer }
   }
   if (action.type === 'RESETNOTIFICATION') {
-    return 'No new notifications'
+    if (store.timer) {
+      clearTimeout(store.timer)
+    }
+    return { message: 'No new notifications', timer: null }
   }
 
   return store
 }
 
-export const setNotification = message => {
-  return { type: 'SETNOTIFICATION', message }
-}
 export const resetNotification = () => {
-  return { type: 'RESETNOTIFICATION' }
+  return async dispatch => {
+    dispatch({
+      type: 'RESETNOTIFICATION'
+    })
+  }
+}
+
+export const notify = (note, time) => {
+  return async dispatch => {
+    let t = setTimeout(() => {
+      dispatch({ type: 'RESETNOTIFICATION' })
+    }, 1000 * time)
+
+    dispatch({ type: 'SETNOTIFICATION', message: note, timer: t })
+  }
 }
 
 export default reducer

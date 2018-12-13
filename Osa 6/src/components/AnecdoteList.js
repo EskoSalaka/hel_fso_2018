@@ -1,36 +1,17 @@
 import React from 'react'
 import { vote } from '../reducers/anecdoteReducer'
 import Filter from './Filter'
-import {
-  setNotification,
-  resetNotification
-} from '../reducers/notificationReducer'
-import { setTimer } from '../reducers/timerReducer'
 import { connect } from 'react-redux'
 import anecdoteService from '../services/anecdotes'
+import { notify } from '../reducers/notificationReducer'
 
 class AnecdoteList extends React.Component {
   handleVote = async (e, anecdote) => {
     e.preventDefault()
 
     await anecdoteService.vote(anecdote)
-    this.props.vote(anecdote.id)
-    this.props.setNotification(`Voted for anecdote "${anecdote.content}"`)
-
-    if (this.props.timer) {
-      clearTimeout(this.props.timer)
-      this.props.setTimer(
-        setTimeout(() => {
-          this.props.resetNotification()
-        }, 5000)
-      )
-    } else {
-      this.props.setTimer(
-        setTimeout(() => {
-          this.props.resetNotification()
-        }, 5000)
-      )
-    }
+    this.props.vote(anecdote)
+    this.props.notify(`Voted for anecdote "${anecdote.content}"`, 5)
   }
 
   render() {
@@ -62,16 +43,13 @@ const anecdotesToShow = (anecdotes, filter) => {
 //another one, the global "timer" for handling the timing of notifications
 const mapStateToProps = state => {
   return {
-    timer: state.timer,
     visibleAnecdotes: anecdotesToShow(state.anecdotes, state.filter)
   }
 }
 
 const mapDispatchToProps = {
-  setNotification,
-  resetNotification,
-  vote,
-  setTimer
+  notify,
+  vote
 }
 
 const ConnectedAnecdoteList = connect(
