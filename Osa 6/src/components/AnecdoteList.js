@@ -7,11 +7,13 @@ import {
 } from '../reducers/notificationReducer'
 import { setTimer } from '../reducers/timerReducer'
 import { connect } from 'react-redux'
+import anecdoteService from '../services/anecdotes'
 
 class AnecdoteList extends React.Component {
-  handleVote = (e, anecdote) => {
+  handleVote = async (e, anecdote) => {
     e.preventDefault()
 
+    await anecdoteService.vote(anecdote)
     this.props.vote(anecdote.id)
     this.props.setNotification(`Voted for anecdote "${anecdote.content}"`)
 
