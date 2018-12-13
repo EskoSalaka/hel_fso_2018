@@ -1,41 +1,36 @@
 import React from 'react'
 import { create } from '../reducers/anecdoteReducer'
+import { setTimer } from '../reducers/timerReducer'
+import { connect } from 'react-redux'
 import {
   setNotification,
   resetNotification
 } from '../reducers/notificationReducer'
 
 class AnecdoteForm extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      timer: null
-    }
-  }
-
   handleSubmit = e => {
     e.preventDefault()
     const content = e.target.anecdote.value
-    this.props.store.dispatch(create(content))
+    this.props.create(content)
 
     e.target.anecdote.value = ''
 
-    this.props.store.dispatch(
-      setNotification(`Added new anecdote "${content}"`)
-    )
+    this.props.setNotification(`Added new anecdote "${content}"`)
 
-    if (this.state.timer) {
-      clearTimeout(this.state.timer)
-      this.setState({
-        timer: null
-      })
+    if (this.props.timer) {
+      clearTimeout(this.props.timer)
+      this.props.setTimer(
+        setTimeout(() => {
+          this.props.resetNotification()
+        }, 5000)
+      )
+    } else {
+      this.props.setTimer(
+        setTimeout(() => {
+          this.props.resetNotification()
+        }, 5000)
+      )
     }
-
-    this.setState({
-      timer: setTimeout(() => {
-        this.props.store.dispatch(resetNotification())
-      }, 5000)
-    })
   }
 
   render() {
@@ -53,4 +48,20 @@ class AnecdoteForm extends React.Component {
   }
 }
 
-export default AnecdoteForm
+const mapStateToProps = state => {
+  return { timer: state.timer }
+}
+
+const mapDispatchToProps = {
+  setNotification,
+  resetNotification,
+  create,
+  setTimer
+}
+
+const ConnectedAnecdoteForm = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteForm)
+
+export default ConnectedAnecdoteForm

@@ -5,61 +5,76 @@ import {
   setNotification,
   resetNotification
 } from '../reducers/notificationReducer'
+import { setTimer } from '../reducers/timerReducer'
+import { connect } from 'react-redux'
 
 class AnecdoteList extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      timer: null
-    }
-  }
-
   handleVote = (e, anecdote) => {
     e.preventDefault()
 
-    this.props.store.dispatch(vote(anecdote.id))
-    this.props.store.dispatch(
-      setNotification(`Voted for anecdote "${anecdote.content}"`)
-    )
+    this.props.vote(anecdote.id)
+    this.props.setNotification(`Voted for anecdote "${anecdote.content}"`)
 
-    if (this.state.timer) {
-      console.log(this.state.timer)
-
-      clearTimeout(this.state.timer)
-      this.setState({ timer: null })
+    if (this.props.timer) {
+      clearTimeout(this.props.timer)
+      this.props.setTimer(
+        setTimeout(() => {
+          this.props.resetNotification()
+        }, 5000)
+      )
+    } else {
+      this.props.setTimer(
+        setTimeout(() => {
+          this.props.resetNotification()
+        }, 5000)
+      )
     }
-
-    this.setState({
-      timer: setTimeout(() => {
-        this.props.store.dispatch(resetNotification())
-      }, 5000)
-    })
   }
 
   render() {
-    const anecdotes = this.props.store.getState().anecdotes
-    const filter = this.props.store.getState().filter
     return (
       <div>
         <h2>Anecdotes</h2>
-        <Filter store={this.props.store} />
-        {anecdotes
-          .filter(a => a.content.includes(filter))
-          .sort((a, b) => b.votes - a.votes)
-          .map(anecdote => (
-            <div key={anecdote.id}>
-              <div>{anecdote.content}</div>
-              <div>
-                has {anecdote.votes}
-                <button onClick={e => this.handleVote(e, anecdote)}>
-                  vote
-                </button>
-              </div>
+        <Filter />
+        {this.props.visibleAnecdotes.map(anecdote => (
+          <div key={anecdote.id}>
+            <div>{anecdote.content}</div>
+            <div>
+              has {anecdote.votes}
+              <button onClick={e => this.handleVote(e, anecdote)}>vote</button>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     )
   }
 }
 
-export default AnecdoteList
+const anecdotesToShow = (anecdotes, filter) => {
+  return anecdotes
+    .filter(a => a.content.includes(filter))
+    .sort((a, b) => b.votes - a.votes)
+}
+
+// There is supposed to be only one state prop but i took the liberty to add
+//another one, the global "timer" for handling the timing of notifications
+const mapStateToProps = state => {
+  return {
+    timer: state.timer,
+    visibleAnecdotes: anecdotesToShow(state.anecdotes, state.filter)
+  }
+}
+
+const mapDispatchToProps = {
+  setNotification,
+  resetNotification,
+  vote,
+  setTimer
+}
+
+const ConnectedAnecdoteList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AnecdoteList)
+
+export default ConnectedAnecdoteList
