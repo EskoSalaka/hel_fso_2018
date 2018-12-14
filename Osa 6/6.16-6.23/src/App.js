@@ -36,11 +36,22 @@ const AnecdoteList = ({ anecdotes }) => (
 )
 
 const Notification = ({ message }) => {
-  if (message === null) {
+  const notificationStyle = {
+    color: 'green',
+    fontStyle: 'bold',
+    fontSize: 24,
+    borderStyle: 'outset',
+    borderRadius: '5px',
+    backgroundColor: 'lightblue',
+    display: 'inline-block',
+    padding: '5px'
+  }
+
+  if (message === null || message.length === 0) {
     return null
   }
 
-  return <div>{message}</div>
+  return <div style={notificationStyle}>{message}</div>
 }
 
 const About = () => (
@@ -172,7 +183,7 @@ class App extends React.Component {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     this.setState({
       anecdotes: this.state.anecdotes.concat(anecdote),
-      notification: 'Added new'
+      notification: `Added new notification "${anecdote.content}"`
     })
 
     setTimeout(() => {
