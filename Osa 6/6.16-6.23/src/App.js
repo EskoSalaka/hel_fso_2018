@@ -1,15 +1,40 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
 
-const Menu = () => (
-  <div>
-    <Link to="/">anecdotes</Link>
-    &nbsp;
-    <Link to="/create">create new</Link>
-    &nbsp;
-    <Link to="/about">about</Link>&nbsp;
-  </div>
-)
+const Menu = ({}) => {
+  const menuStyle = {
+    color: 'green',
+    fontStyle: 'bold',
+    fontSize: 24,
+    backgroundColor: 'tan',
+    fontWeight: 'bold',
+    padding: '5px'
+  }
+
+  const activeStyle = {
+    color: 'black',
+    fontStyle: 'bold',
+    fontSize: 24,
+    backgroundColor: 'lightGrey'
+  }
+
+  return (
+    <div style={menuStyle}>
+      <NavLink to="/" exact activeStyle={activeStyle}>
+        anecdotes
+      </NavLink>
+      &nbsp;
+      <NavLink to="/create" exact activeStyle={activeStyle}>
+        create new
+      </NavLink>
+      &nbsp;
+      <NavLink to="/about" exact activeStyle={activeStyle}>
+        about
+      </NavLink>
+      &nbsp;
+    </div>
+  )
+}
 
 const Anecdote = ({ anecdote }) => (
   <div>
@@ -39,7 +64,7 @@ const Notification = ({ message }) => {
   const notificationStyle = {
     color: 'green',
     fontStyle: 'bold',
-    fontSize: 24,
+    fontSize: 20,
     borderStyle: 'outset',
     borderRadius: '5px',
     backgroundColor: 'lightblue',
