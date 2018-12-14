@@ -1,16 +1,24 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import {
   ListGroup,
   ListGroupItem,
   Grid,
   Row,
   Col,
-  Image
+  Image,
+  ControlLabel,
+  FormGroup,
+  FormControl,
+  Button,
+  Navbar,
+  NavItem,
+  Nav
 } from 'react-bootstrap'
 
-const Menu = ({}) => {
-  const menuStyle = {
+const Menu = () => {
+  //Old styles replaced by bootstrap
+  /* const menuStyle = {
     color: 'green',
     fontStyle: 'bold',
     fontSize: 24,
@@ -24,23 +32,28 @@ const Menu = ({}) => {
     fontStyle: 'bold',
     fontSize: 24,
     backgroundColor: 'lightGrey'
-  }
+  } */
 
   return (
-    <div style={menuStyle}>
-      <NavLink to="/" exact activeStyle={activeStyle}>
-        anecdotes
-      </NavLink>
-      &nbsp;
-      <NavLink to="/create" exact activeStyle={activeStyle}>
-        create new
-      </NavLink>
-      &nbsp;
-      <NavLink to="/about" exact activeStyle={activeStyle}>
-        about
-      </NavLink>
-      &nbsp;
-    </div>
+    <Navbar inverse collapseOnSelect>
+      <Navbar.Header>
+        <Navbar.Brand>Anecdote app</Navbar.Brand>
+        <Navbar.Toggle />
+      </Navbar.Header>
+      <Navbar.Collapse>
+        <Nav>
+          <NavItem href="#">
+            <Link to="/">Anecdotes</Link>
+          </NavItem>
+          <NavItem href="#">
+            <Link to="/create">Create new anecdote</Link>
+          </NavItem>
+          <NavItem href="#">
+            <Link to="/about">About</Link>
+          </NavItem>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
   )
 }
 
@@ -176,31 +189,33 @@ class CreateNew extends React.Component {
       <div>
         <h2>create a new anecdote</h2>
         <form onSubmit={this.handleSubmit}>
-          <div>
-            content
-            <input
-              name="content"
-              value={this.state.content}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div>
-            author
-            <input
+          <FormGroup>
+            <ControlLabel>Author</ControlLabel>
+            <FormControl
+              type="text"
               name="author"
               value={this.state.author}
               onChange={this.handleChange}
             />
-          </div>
-          <div>
-            url for more info
-            <input
+            <ControlLabel>URL for more info</ControlLabel>
+            <FormControl
+              type="text"
               name="info"
               value={this.state.info}
               onChange={this.handleChange}
             />
-          </div>
-          <button>create</button>
+            <ControlLabel>Content</ControlLabel>
+            <FormControl
+              componentClass="textarea"
+              type="text"
+              name="content"
+              value={this.state.content}
+              onChange={this.handleChange}
+            />
+            <Button bsStyle="success" type="submit">
+              Create
+            </Button>
+          </FormGroup>
         </form>
       </div>
     )
