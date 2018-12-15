@@ -30,7 +30,9 @@ class UserInfo extends React.Component {
           <div>
             <ListGroup>
               {user.blogs.map(b => (
-                <ListGroupItem key={b._id}>{b.title}</ListGroupItem>
+                <ListGroupItem key={b._id}>
+                  {b.title} by {b.author}
+                </ListGroupItem>
               ))}
             </ListGroup>
           </div>
