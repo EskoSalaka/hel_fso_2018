@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QgVXNlcjMiLCJpZCI6IjViOTdkM2VjMDc2NDkyMmZjYzZjNWUyMCIsImlhdCI6MTUzNjczODY4Mn0.phK7qFW3po_-JTx8Fqh8Icf9OKnUfPRvV9s6lC2GXNY
+
+{
+  "title": "Test post with auth3",
+  "author": "Erkki",
+  "url": "www.microsoftAUTH3.com",
+  "likes": 300
+}
